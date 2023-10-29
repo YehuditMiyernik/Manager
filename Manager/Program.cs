@@ -16,10 +16,10 @@ class Program
 
         //da.DisplayProd(connectionString);
 
-        //int rowsCategory = da.insertCategory(connectionString);
-        //Console.WriteLine(rowsCategory + " Added to DB");
+        int rowsCategory = da.insertCategory(connectionString);
+        Console.WriteLine(rowsCategory + " Added to DB");
 
-        da.DisplayCategory(connectionString);
+        //da.DisplayCategory(connectionString);
     }
 }
 
