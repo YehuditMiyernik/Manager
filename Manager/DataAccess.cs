@@ -8,9 +8,9 @@ class DataAccess
     {
         string X = "y";
         int rowAffected = 0;
-        while (X == "y" ||  X == "Y")
+        while (X == "y" || X == "Y")
         {
-            string ProdName, Price, Image, CategoryId;
+            string ProdName, Price, Image, CategoryId, prodDescription;
             Console.WriteLine("insert product name");
             ProdName = Console.ReadLine();
             Console.WriteLine("insert price");
@@ -19,8 +19,10 @@ class DataAccess
             Image = Console.ReadLine();
             Console.WriteLine("insert categoryId");
             CategoryId = Console.ReadLine();
-            string query = "INSERT INTO Products(ProdName, Price, ProdImage, CategoryId) " +
-                "VALUES(@ProdName, @Price, @prodImage, @CategoryId)";
+            Console.WriteLine("insert prodDescription");
+            prodDescription = Console.ReadLine();
+            string query = "INSERT INTO Products(ProdName, Price, ProdImage, CategoryId, prodDescription) " +
+                "VALUES(@ProdName, @Price, @prodImage, @CategoryId, @prodDescription)";
             using (SqlConnection con = new SqlConnection(connectionString))
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
@@ -28,10 +30,11 @@ class DataAccess
                 cmd.Parameters.Add("@Price", SqlDbType.Int).Value = Price;
                 cmd.Parameters.Add("@ProdImage", SqlDbType.VarChar, 20).Value = Image;
                 cmd.Parameters.Add("@CategoryId", SqlDbType.Int).Value = CategoryId;
+                cmd.Parameters.Add("@prodDescription", SqlDbType.VarChar, 100).Value = prodDescription;
 
                 con.Open();
                 rowAffected += cmd.ExecuteNonQuery();
-                con.Close();                
+                con.Close();
             }
             Console.WriteLine("Would you like to contiue? press y/n");
             X = Console.ReadLine();
@@ -73,10 +76,10 @@ class DataAccess
             SqlDataReader reader = cmd.ExecuteReader();
             if (reader.HasRows)
             {
-                Console.WriteLine("prodId\tprodName\t\tprice\timage");
+                Console.WriteLine("prodId\tprodName\t\tprice\timage\t\t\tcategoryId\t\tprodDescription");
                 while (reader.Read())
                 {
-                    Console.WriteLine("{0}\t{1}\t{2}\t{3}", reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetString(3));
+                    Console.WriteLine("{0}\t{1}\t{2}\t{3}\t{4}\t\t\t{5}", reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetString(3), reader.GetInt32(4), reader.GetString(5));
                 }
             }
             else
@@ -107,4 +110,5 @@ class DataAccess
         }
     }
 }
+
 
